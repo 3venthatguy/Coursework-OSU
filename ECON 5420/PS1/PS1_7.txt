@@ -1,0 +1,8 @@
+Part A
+"Write a single line of Julia code that implements the OLS coefficient estimator using matrix algebra. The code should multiply the inverse of X-transpose-X by X-transpose-Y to obtain the coefficient estimates."
+
+Part B
+"Write a Julia function called my_function that takes three arguments (X, Y, beta) and computes the sandwich estimator. Using only 2 lines of code within the function, first create a diagonal matrix called eps_d containing the squared residuals, then return the sandwich formula."
+
+Part C
+"Write a Julia function called my_function_2 that takes X and Y as inputs and returns homoskedastic standard errors for OLS coefficients. Include intermediate variables in the provided order: XtX_inv for (X'X)^(-1), beta for coefficient estimates, residuals for prediction errors, n and k for matrix dimensions, rss for residual sum of squares, sigma_squared for error variance estimate, var_cov_matrix for coefficient variance matrix, and se for the final standard errors."
