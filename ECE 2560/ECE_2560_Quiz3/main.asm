@@ -1,7 +1,8 @@
 ;-------------------------------------------------------------------------------
 ; MSP430 Assembler Code Template for use with TI Code Composer Studio
 ;
-;
+; Quiz #3
+; Evan Menges.24
 ;-------------------------------------------------------------------------------
             .cdecls C,LIST,"msp430.h"       ; Include device header file
             
@@ -33,7 +34,7 @@ StopWDT     mov.w   #WDTPW|WDTHOLD,&WDTCTL  ; Stop watchdog timer
 ; Main loop here
 ;-------------------------------------------------------------------------------
 
-part_a:
+task_1:
 				mov.w #0, R4				; R4 = 0 will be the index
 				mov.b array1(R4), R5		; R5 = array1[R4] and R4 = 0
 				add.w #1, R4				; R4++
@@ -49,10 +50,10 @@ part_a:
 				rra.b R6					; Divide by 4, sign extended
 				mov.b R6, &avg				; Store average
 
-part_b:
-				mov.b #0xB8, &0x1C37
-				mov.b #0x6D, &0x1C38
-				mov.b #0x13, &0x1C39
+task_2:
+				mov.b #0xB8, &0x1C37		; Populates each provided
+				mov.b #0x6D, &0x1C38		; RAM address to their
+				mov.b #0x13, &0x1C39		; corresponding byte value
 				mov.b #0x72, &0x1C3A
 				mov.b #0xAC, &0x1C3B
 				mov.b #0x29, &0x1C3C
