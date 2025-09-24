@@ -1,0 +1,25 @@
+Part A
+"""
+Write an R function that implements the two-stage least squares (2SLS) estimator for instrumental variables regression. The function should take three arguments: Y (the dependent variable vector), X (the matrix of endogenous regressors), and Z (the matrix of instrumental variables).
+
+The function should:
+- First stage: Project X onto the space spanned by instruments Z to get fitted values X_hat
+- Second stage: Regress Y on the fitted values X_hat using OLS
+
+Return both the fitted values from the first stage and the coefficient estimates from the second stage as a list.
+"""
+
+
+Part B
+"""
+Write an R function that computes the two-stage least squares (2SLS) estimator with heteroskedasticity-robust standard errors. The function should take Y (dependent variable), X (endogenous regressors matrix), and Z (instruments matrix) as inputs.
+
+The function should:
+- Calculate the projection matrix for the instruments
+- Compute the 2SLS coefficient estimates
+- Calculate residuals using the original X (not fitted values)
+- Estimate the variance-covariance matrix assuming homoskedasticity
+- Compute standard errors from the variance-covariance matrix
+
+Return the coefficient estimates, standard errors, and the full variance-covariance matrix.
+"""
