@@ -1,2 +1,2 @@
-# OSU Classes
+# Undergraduate Classwork at The Ohio State University
 
