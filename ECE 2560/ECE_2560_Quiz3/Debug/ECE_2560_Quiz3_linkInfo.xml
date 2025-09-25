@@ -2,7 +2,7 @@
 <link_info>
    <banner>MSP430 Linker PC v21.6.1.LTS</banner>
    <copyright>Copyright (c) 2003-2018 Texas Instruments Incorporated</copyright>
-   <link_time>0x68d40807</link_time>
+   <link_time>0x68d4b0d3</link_time>
    <link_errors>0x0</link_errors>
    <output_file>ECE_2560_Quiz3.out</output_file>
    <entry_point>
@@ -497,7 +497,7 @@
          <size>0x51</size>
          <input_file_ref idref="fl-2"/>
       </object_component>
-      <object_component id="oc-60a">
+      <object_component id="oc-609">
          <name>.debug_line</name>
          <load_address>0x51</load_address>
          <run_address>0x51</run_address>
@@ -531,7 +531,7 @@
          <size>0x20</size>
          <input_file_ref idref="fl-2"/>
       </object_component>
-      <object_component id="oc-609">
+      <object_component id="oc-60a">
          <name>.debug_aranges</name>
          <load_address>0x20</load_address>
          <run_address>0x20</run_address>
@@ -1290,7 +1290,7 @@
          <size>0x8e</size>
          <contents>
             <object_component_ref idref="oc-7e"/>
-            <object_component_ref idref="oc-60a"/>
+            <object_component_ref idref="oc-609"/>
          </contents>
       </logical_group>
       <logical_group id="lg-66a" display="never" color="cyan">
@@ -1311,7 +1311,7 @@
          <size>0x40</size>
          <contents>
             <object_component_ref idref="oc-7c"/>
-            <object_component_ref idref="oc-609"/>
+            <object_component_ref idref="oc-60a"/>
          </contents>
       </logical_group>
       <logical_group id="lg-66e" display="never" color="cyan">
