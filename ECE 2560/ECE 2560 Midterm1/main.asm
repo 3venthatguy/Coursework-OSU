@@ -81,27 +81,10 @@ start:
 			clr.w	R7
 
 			mov.w	&LENGTH, R4
-			mov.w	#0, R6
-			mov.w	#0,	R7
+			mov.w	#LENGTH, R7
 
 repeat_1:
-			add.w	&LENGTH+1, R5
-			sub.w	R4, R5
-			tst.w	R4
-			jge		positive
 
-			inv.w	R4
-
-positive:
-			cmp.w	#100, R6
-			jlo		repeat_1
-
-
-
-			mov.w	&LENGTH, &closest_1
-
-repeat_1:
-			add.w
 
 
 end:		jmp		end
