@@ -37,7 +37,7 @@ foot:		.word 0xfffa
 ; While developing and debugging your code you can work with this smaller array
 ; make sure to submit your results for the array above
 ; points: 	.word -97, -31, 83, -37, 59, 47
-; LENGTH:	.set 12
+; LENGTH:		.set 12
 
 ;-------------------------------------------------------------------------------
             .text                           ; Assemble into program memory.
@@ -75,17 +75,63 @@ StopWDT     mov.w   #WDTPW|WDTHOLD,&WDTCTL  ; Stop watchdog timer
 ; Before submitting your solution make sure it checks all points above.
 
 start:
-			clr.w 	R4
-			clr.w 	R5
-			clr.w 	R6
-			clr.w	R7
+			; Initialize the registers
+			mov.w	#0x7FFF, R8				; Initialize R8 to max signed value
+			mov.w	#points, R9				; Initialize R9 to outer loop pointer address location
+			mov.w	#LENGTH, R10			; Initialize R10 to values stored in LENGTH
 
-			mov.w	&LENGTH, R4
-			mov.w	#LENGTH, R7
+outer_loop:
+			cmp.w	#4, R10					; Check if outer loop is done (2 bytes left in set)
+			jl		done					; Jump to done function if R10 has less than 2 bytes left
 
-repeat_1:
+			; Inner loop setup
+			mov.w	R9, R11					; Set R11 as inner loop pointer
+			incd.w	R11						; Start from next element
+			mov.w	R10, R12				; Set R12 as inner loop counter
+			decd.w	R12						; Adjust for starting position
 
+inner_loop:
+			cmp.w	#2, R12					; Check if inner loop is done
+			jl		next_outer				; Check if inner loop is done
 
+			; Calculate absolute difference
+			mov.w	@R9, R13				; R13 = points[outer_i]
+			mov.w	@R11, R14				; R14 = points[inner_i]
+			sub.w	R14, R13				; R13 = points[outer_i] - points[inner_i]
+
+			; Get absolute value
+			tst.w 	R13						; Tests if R13 is negative
+			jge		abs_done				; Jumps if positive
+
+			; Negate if negative
+			inv.w	R13						; Inverts R13 from negative to positive getting the one's complement
+			inc.w	R13						; Increments R13 by 1 to compensate for two-s complement
+
+abs_done:
+			; Check if this is new minimum
+			cmp.w	R8, R13					; Compares with current min abs diff value
+			jge		not_min					; Jump if R13 >= R8
+
+			; Update minimum difference and closest pair
+			mov.w	R13, R8
+			mov.w	@R9, &closest_1			; Stores first element
+			mov.w	@R11, &closest_2		; Stores second element
+
+not_min:
+			; Increment inner loop
+			incd.w	R11
+			decd.w	R12
+			jmp		inner_loop
+
+next_outer:
+			; Increment outer loop
+			incd.w	R9
+			decd.w	R10
+			jmp		outer_loop
+
+done:
+			; Store minimum absolute difference
+			mov.w	R8, &MAD
 
 end:		jmp		end
 			nop
