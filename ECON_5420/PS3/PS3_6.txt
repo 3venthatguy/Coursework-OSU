@@ -1,0 +1,46 @@
+Part A
+
+Prompt:
+Write an R function called my_function_1 that implements the Cochrane-Orcutt transformation 
+for correcting serial correlation in regression. The function should take three arguments: 
+a response vector y, a design matrix X, and an estimated autocorrelation coefficient rho_hat. 
+The function should transform both the response and predictor variables using the AR(1) correction 
+(subtracting rho_hat times the lagged values), then estimate the regression coefficients using the 
+transformed data via ordinary least squares. Return the coefficient estimates.
+
+Labeled code:
+my_function_1 <- function(y, X, rho_hat) {
+  # Step 1: Calculate sample size and transform the response variable by subtracting rho_hat times the lagged response
+  
+  # Step 2: Transform the design matrix by subtracting rho_hat times the lagged design matrix
+  
+  # Step 3: Estimate regression coefficients using OLS on transformed data: beta_hat = (X_tr'X_tr)^(-1) X_tr'y_tr
+}
+
+-----------------------------------------------------------------------------------------------------------
+
+Part B
+
+Prompt:
+Write an R function called my_function_2 that implements propensity score matching to estimate a 
+treatment effect. The function should take three arguments: an outcome vector y, a binary treatment 
+indicator d, and a matrix or vector of covariates z. First, estimate propensity scores by regressing 
+the treatment on the covariates. Then, for each treated unit, find the control unit with the closest 
+propensity score (nearest neighbor matching without replacement). Finally, calculate and return the 
+average treatment effect on the treated (ATT) as the difference between the mean outcome of treated 
+units and the mean outcome of their matched controls.
+
+Labeled code:
+rmy_function_2 <- function(y, d, z) {
+  # Step 1: Estimate propensity scores by regressing treatment on covariates
+  
+  # Step 2: Extract predicted propensity scores for all units
+  
+  # Step 3: Identify indices of treated units (d=1) and control units (d=0)
+  
+  # Step 4: Initialize vector to store matched control indices
+  
+  # Step 5: For each treated unit, find the control unit with the closest propensity score (nearest neighbor matching)
+  
+  # Step 6: Calculate ATT as the difference between mean outcomes of treated units and their matched controls
+}
