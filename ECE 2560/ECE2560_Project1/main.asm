@@ -69,8 +69,23 @@ main: 		jmp		main
 ; Subroutine does not access adressed memory
 ;-------------------------------------------------------------------------------
 array_square:
+			push.w  R4                      ; Save registers
+			push.w  R6
+			push.w  R10
 
-			call	#square					; square: R12 = R10^2
+square_loop:
+			mov.w   @R4, R10                ; Load x[i] into R10
+			call	#square                 ; R12 = R10^2
+			mov.w   R12, 0(R4)              ; Store result back to x[i]
+
+			incd.w  R4                      ; Move to next word (2 bytes)
+			dec.w   R6                      ; Decrement counter
+			jnz     square_loop             ; Continue if not zero
+
+			pop.w   R10                     ; Restore registers
+			pop.w   R6
+			pop.w   R4
+			ret
 
 ;-------------------------------------------------------------------------------
 ; Subroutine: array_reduceQ
@@ -90,8 +105,21 @@ array_square:
 ; Subroutine does not access adressed memory
 ;-------------------------------------------------------------------------------
 array_reduceQ:
+			push.w  R4                      ; Save registers
+			push.w  R6
 
-			call	#x_div_2powerP			; divide R12 by 2^R10
+reduceQ_loop:
+			mov.w   @R4, R12                ; Load x[i] into R12
+			call	#x_div_2powerP          ; divide R12 by 2^R10
+			mov.w   R12, 0(R4)              ; Store result back to x[i]
+
+			incd.w  R4                      ; Move to next word (2 bytes)
+			dec.w   R6                      ; Decrement counter
+			jnz     reduceQ_loop            ; Continue if not zero
+
+			pop.w   R6                      ; Restore registers
+			pop.w   R4
+			ret
 
 ;-------------------------------------------------------------------------------
 ; Subroutine: square
@@ -106,11 +134,22 @@ array_reduceQ:
 ; Subroutine does not access adressed memory
 ;-------------------------------------------------------------------------------
 square:
-			push.w	R10
-			push.w	R11
+			push.w	R10						; Save original R10
+			push.w	R11						; Save R11
 
+			tst.w   R10                     ; Test if R10 is negative
+			jge     already_positive        ; If positive or zero, skip
 
+			inv.w   R10                     ; If negative, invert bits
+			inc.w   R10                     ; Add 1 to get absolute value
 
+already_positive:
+			mov.w   R10, R11                ; Copy |R10| to R11
+			call	#x_times_y              ; R12 = R10 * R11 = R10^2
+
+			pop.w   R11                     ; Restore R11
+			pop.w   R10                     ; Restore original R10
+			ret
 
 ;-------------------------------------------------------------------------------
 ; Subroutine: array_average
@@ -129,7 +168,19 @@ square:
 ; Subroutine does not access variables defined in .data or .text
 ;-------------------------------------------------------------------------------
 array_average:
+			push.w  R4                      ; Save registers
+			push.w  R6
+			push.w  R10
 
+			clr.w   R12                     ; Initialize sum = 0
+			mov.w   R6, R10                 ; Save original R6 in R10 temporarily
+
+sum_loop:
+			add.w   @R4+, R12               ; Add x[i] to sum, auto-increment R4
+			dec.w   R6                      ; Decrement counter
+			jnz     sum_loop                ; Continue if not zero
+
+			mov.w   R10, R6                 ; Restore R6 for division calculation
 
 			; use this code to find the exponent p with 2^p ~= R6
 			; result is accurate only if R6 is a power of 2
@@ -144,9 +195,12 @@ div_again:
 found_p:
 			; p = log_2(R6) is in R10
 
-
-
 			call	#x_div_2powerP			; divide R12 by 2^R10
+
+			pop.w   R10                     ; Restore registers
+			pop.w   R6
+			pop.w   R4
+			ret
 
 
 ;-------------------------------------------------------------------------------
