@@ -1,0 +1,28 @@
+n  = -5:30;
+u  = (n >= 0);
+
+x1 = cos(3*n) .* u;
+x2 = 3 .* (0.8.^n) .* cos(pi*n/4) .* u;
+x3 = (-0.5).^n .* u;
+x4 = cos(pi*n/5 - pi/2);
+x5 = cos(n);
+
+stem(n, x1, 'filled')
+xlabel('n')
+ylabel('x[n]')
+
+stem(n, x1, 'filled')
+xlabel('n')
+ylabel('x[n]')
+
+stem(n, x1, 'filled')
+xlabel('n')
+ylabel('x[n]')
+
+stem(n, x1, 'filled')
+xlabel('n')
+ylabel('x[n]')
+
+stem(n, x1, 'filled')
+xlabel('n')
+ylabel('x[n]')
