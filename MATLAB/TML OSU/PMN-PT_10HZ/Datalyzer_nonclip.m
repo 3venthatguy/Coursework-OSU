@@ -1,6 +1,5 @@
 clear; clc; close all;
 
-%{
 %% Load and Prepare Data
 data = readmatrix("C:\Users\evanm\Downloads\TempDownloads\260.csv");
 % data = readmatrix("/Users/evansmacbookair/Downloads/TempDownloads/260.csv");
@@ -8,48 +7,11 @@ data = readmatrix("C:\Users\evanm\Downloads\TempDownloads\260.csv");
 time = data(:, 1);
 CH1 = data(:, 2) * 10;  % Account for 10x amplifier
 CH2 = data(:, 3);
-%}
-
-%% Load Both Datasets
-
-data_pos = readmatrix("C:\Users\evanm\Downloads\TempDownloads\260.csv");
-data_neg = readmatrix("C:\Users\evanm\Downloads\TempDownloads\260.csv");
-
-% Extract positive half data
-time_pos = data_pos(:, 1);
-CH1_pos = data_pos(:, 2) * 10;  % Account for 10x amplifier
-CH2_pos = data_pos(:, 3);
-
-% Keep only positive voltages (upper half of hysteresis)
-valid_pos = CH1_pos > 0;
-time_pos = time_pos(valid_pos);
-CH1_pos = CH1_pos(valid_pos);
-CH2_pos = CH2_pos(valid_pos);
-
-% Extract negative half data
-time_neg = data_neg(:, 1);
-CH1_neg = data_neg(:, 2) * 10;  % Account for 10x amplifier
-CH2_neg = data_neg(:, 3);
-
-% Keep only negative voltages (lower half of hysteresis)
-valid_neg = CH1_neg < 0;
-time_neg = time_neg(valid_neg);
-CH1_neg = CH1_neg(valid_neg);
-CH2_neg = CH2_neg(valid_neg);
-
-% Combine both halves
-CH1 = [CH1_pos; CH1_neg];
-CH2 = [CH2_pos; CH2_neg];
-
-% Sort by CH1 to form proper hysteresis loop
-[CH1, sort_idx] = sort(CH1);
-CH2 = CH2(sort_idx);
 
 %% Calculate Critical Values
 
 % Split data into two half-cycles
-% mid_point = round(length(CH1) / 2);
-[~, mid_point] = min(abs(diff(sign(CH1))));
+mid_point = round(length(CH1) / 2);
 
 % === Coercive Field (Ec) - where CH2 crosses zero ===
 [~, idx_left] = min(abs(CH2(1:mid_point)));
@@ -128,13 +90,6 @@ ylim([min(CH2)*1.30, max(CH2)*1.30]);
 set(gca, 'FontSize', 11);
 hold off;
 
-%% Other Figures
-figure(2);
-plot(time_pos, CH1_pos, 'r-', 'LineWidth', 2);
-hold on;
-plot(time_neg, CH1_neg, 'g-', 'LineWidth', 2);
-
-%{
 %% Figure 2: Time Series of CH1 and CH2
 figure(2);
 plot(time, CH1, 'r-', 'LineWidth', 2);
@@ -162,4 +117,3 @@ title('Time Series: Polarization Response', 'FontSize', 14, 'FontWeight', 'bold'
 
 grid on;
 set(gca, 'FontSize', 11);
-%}
