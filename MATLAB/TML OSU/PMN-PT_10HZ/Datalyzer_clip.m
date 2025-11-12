@@ -1,6 +1,6 @@
 %% Load your two CSV files
-data_pos = readmatrix("C:\Users\evanm\Downloads\TempDownloads\260.csv");
-data_neg = data_pos;
+data_pos = readmatrix("/Users/evansmacbookair/Downloads/TempDownloads/380P.csv");
+data_neg = readmatrix("/Users/evansmacbookair/Downloads/TempDownloads/380N.csv");
 
 % data_pos = readmatrix('positive_Pr.csv');
 % data_neg = readmatrix('negative_Pr.csv');
