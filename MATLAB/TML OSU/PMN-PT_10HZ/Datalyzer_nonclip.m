@@ -2,118 +2,189 @@ clear; clc; close all;
 
 %% Load and Prepare Data
 data = readmatrix("C:\Users\evanm\Downloads\TempDownloads\260.csv");
-% data = readmatrix("/Users/evansmacbookair/Downloads/TempDownloads/260.csv");
 
 time = data(:, 1);
 CH1 = data(:, 2) * 10;  % Account for 10x amplifier
 CH2 = data(:, 3);
 
-%% Calculate Critical Values
+% Apply moving average smoothing
+window_size = 100; % Adjust this - larger = smoother but less detail
+CH1_smooth = movmean(CH1, window_size);
+CH2_smooth = movmean(CH2, window_size);
 
-% Split data into two half-cycles
-mid_point = round(length(CH1) / 2);
+%% Voltage Input Hysteresis Loop
 
-% === Coercive Field (Ec) - where CH2 crosses zero ===
-[~, idx_left] = min(abs(CH2(1:mid_point)));
-Ec_left = CH1(idx_left);
-
-[~, idx_right] = min(abs(CH2(mid_point:end)));
-idx_right = idx_right + mid_point - 1;
-Ec_right = CH1(idx_right);
-
-Ec_avg = (abs(Ec_left) + abs(Ec_right)) / 2;
-
-% === Remanent Polarization (Pr) - where CH1 crosses zero ===
-[~, idx_upper] = min(abs(CH1(1:mid_point)));
-Pr_upper = CH2(idx_upper);
-
-[~, idx_lower] = min(abs(CH1(mid_point:end)));
-idx_lower = idx_lower + mid_point - 1;
-Pr_lower = CH2(idx_lower);
-
-Pr_avg = (abs(Pr_upper) + abs(Pr_lower)) / 2;
-
-% === Maximum Polarization (Pmax) - peak values ===
-[Pmax_pos, idx_Pmax_pos] = max(CH2);
-[Pmax_neg, idx_Pmax_neg] = min(CH2);
-Pmax_avg = (abs(Pmax_pos) + abs(Pmax_neg)) / 2;
-
-E_at_Pmax_pos = CH1(idx_Pmax_pos);
-E_at_Pmax_neg = CH1(idx_Pmax_neg);
-
-%% Display Results
-fprintf('\n========== Critical Values ==========\n\n');
-fprintf('Coercive Field (Ec):\n');
-fprintf('  Left:   %8.2f V\n', Ec_left);
-fprintf('  Right:  %8.2f V\n', Ec_right);
-fprintf('  Average:%8.2f V\n\n', Ec_avg);
-
-fprintf('Remanent Polarization (Pr):\n');
-fprintf('  Upper:  %8.4f V\n', Pr_upper);
-fprintf('  Lower:  %8.4f V\n', Pr_lower);
-fprintf('  Average:%8.4f V\n\n', Pr_avg);
-
-fprintf('Maximum Polarization (Pmax) - NOT SATURATED:\n');
-fprintf('  Positive: %8.4f V at E = %6.2f V\n', Pmax_pos, E_at_Pmax_pos);
-fprintf('  Negative: %8.4f V at E = %6.2f V\n', Pmax_neg, E_at_Pmax_neg);
-fprintf('  Average:  %8.4f V\n', Pmax_avg);
-fprintf('\n======================================\n\n');
-
-%% Figure 1: Hysteresis Loop with Critical Points
 figure(1);
-plot(CH1, CH2, 'b-', 'LineWidth', 2);
-hold on;
+plot(CH1_smooth, CH2_smooth, 'b-', 'LineWidth', 1.5);
+xlabel('CH1 Voltage (V)', 'FontSize', 12, 'FontWeight', 'bold');
+ylabel('CH2 Voltage (V)', 'FontSize', 12, 'FontWeight', 'bold');
+title('Hysteresis Loop', 'FontSize', 14, 'FontWeight', 'bold');
+xline(0, 'k--', 'LineWidth', 0.8);
+yline(0, 'k--', 'LineWidth', 0.8);
 
-% Mark critical points
-plot([Ec_left, Ec_right], [0, 0], 'ro', 'MarkerSize', 10, ...
-     'LineWidth', 2, 'MarkerFaceColor', 'r');
-plot([0, 0], [Pr_upper, Pr_lower], 'gs', 'MarkerSize', 10, ...
-     'LineWidth', 2, 'MarkerFaceColor', 'g');
-plot([E_at_Pmax_pos, E_at_Pmax_neg], [Pmax_pos, Pmax_neg], 'md', ...
-     'MarkerSize', 10, 'LineWidth', 2, 'MarkerFaceColor', 'm');
 
-% Reference lines
-xline(0, 'k--', 'LineWidth', 0.75);
-yline(0, 'k--', 'LineWidth', 0.75);
+%% Non-Annotated Hysteresis Loop E-field vs Polarization
 
-xlabel('CH1 - Applied Field (V)', 'FontSize', 12, 'FontWeight', 'bold');
-ylabel('CH2 - Polarization Response (V)', 'FontSize', 12, 'FontWeight', 'bold');
-title('PMN Ferroelectric Hysteresis Loop', 'FontSize', 14, 'FontWeight', 'bold');
+% Sample parameters (adjust to your actual values)
+A = (1.58e-3) * (3.89e-3);          % Sample area (m²)
+d = 5e-4;                           % Sample thickness (m)
+C_ref = 1e-7;                       % Reference capacitor (F)
 
-legend('Hysteresis Loop', 'Coercive Field (E_c)', ...
-       'Remanent Polarization (P_r)', 'Maximum Polarization (P_{max})', ...
-       'Location', 'southeast', 'FontSize', 9);
+% Calculate E-field and Polarization
+E_field = CH1_smooth / d;           % V/m
+Q = C_ref * CH2_smooth;             % Coulombs
+P = Q / A;                          % C/m²
 
-grid on;
-xlim([min(CH1)*1.30, max(CH1)*1.30]);
-ylim([min(CH2)*1.30, max(CH2)*1.30]);
-set(gca, 'FontSize', 11);
-hold off;
-
-%% Figure 2: Time Series of CH1 and CH2
 figure(2);
-plot(time, CH1, 'r-', 'LineWidth', 2);
+plot(E_field/1e6, P*1e6, 'r-', 'LineWidth', 1);
 hold on;
-plot(time, CH2, 'g-', 'LineWidth', 2);
 
-xlabel('Time (s)', 'FontSize', 12, 'FontWeight', 'bold');
-ylabel('Signal Amplitude (V)', 'FontSize', 12, 'FontWeight', 'bold');
-title('Time Series: Applied Field and Polarization Response', ...
-      'FontSize', 14, 'FontWeight', 'bold');
-legend('CH1 - Applied Field (10x)', 'CH2 - Polarization', ...
-       'Location', 'best', 'FontSize', 10);
+% Add time-spaced markers
+time_interval = 0.003; % Time spacing in seconds (adjust this)
+% Find indices corresponding to this time interval
+time_diff = diff(time);
+cumulative_time = [0; cumsum(time_diff)];
 
-grid on;
-set(gca, 'FontSize', 11);
+% Select points at regular time intervals
+marker_times = 0:time_interval:max(cumulative_time);
+marker_indices = zeros(length(marker_times), 1);
+
+for i = 1:length(marker_times)
+    [~, marker_indices(i)] = min(abs(cumulative_time - marker_times(i)));
+end
+
+% Remove duplicate indices
+marker_indices = unique(marker_indices);
+
+% Plot markers
+plot(E_field(marker_indices)/1e6, P(marker_indices)*1e6, ...
+     'ro', 'MarkerSize', 9, 'MarkerFaceColor', 'r');
+
 hold off;
 
-%% Figure 3: Time Series of CH2 Only
-figure(3);
-plot(time, CH2, 'g-', 'LineWidth', 2);
-
-xlabel('Time (s)', 'FontSize', 12, 'FontWeight', 'bold');
-ylabel('CH2 - Polarization Response (V)', 'FontSize', 12, 'FontWeight', 'bold');
-title('Time Series: Polarization Response', 'FontSize', 14, 'FontWeight', 'bold');
-
+xlabel('Electric Field (MV m^{-1})', 'FontSize', 12, 'FontWeight', 'bold');
+ylabel('Polarization (\muC m^{-2})', 'FontSize', 12, 'FontWeight', 'bold');
+title('Ferroelectric Hysteresis Loop', 'FontSize', 14, 'FontWeight', 'bold');
 grid on;
-set(gca, 'FontSize', 11);
+xline(0, 'k--', 'LineWidth', 0.8);
+yline(0, 'k--', 'LineWidth', 0.8);
+box on;
+
+%% Annotated Hysteresis Loop E-field vs Polarization
+
+figure(3)
+plot(E_field/1e6, P*1e6, 'r-', 'LineWidth', 2);
+hold on;
+
+%%% Extract key parameters
+% 1. Positive Remanent Polarization (+Pr) - polarization at E = 0 (upper branch)
+E_positive = P > 0;
+[~, idx_E0_pos] = min(abs(E_field(E_positive)));
+E_pos_indices = find(E_positive);
+Pr_pos = P(E_pos_indices(idx_E0_pos));
+
+% 2. Negative Remanent Polarization (-Pr) - polarization at E = 0 (lower branch)
+E_negative = P < 0;
+[~, idx_E0_neg] = min(abs(E_field(E_negative)));
+E_neg_indices = find(E_negative);
+Pr_neg = P(E_neg_indices(idx_E0_neg));
+Pr = (abs(Pr_pos) + abs(Pr_neg)) / 2; % Average remanent polarization
+
+% 3. Positive Coercive Field (+Ec) - field at P = 0 (right side)
+P_near_zero_pos = abs(P) < 0.1*max(abs(P)) & E_field > 0;
+if any(P_near_zero_pos)
+    indices_pos = find(P_near_zero_pos);
+    [~, min_idx] = min(abs(P(indices_pos)));
+    Ec_pos = E_field(indices_pos(min_idx));
+else
+    Ec_pos = NaN;
+end
+
+% 4. Negative Coercive Field (-Ec) - field at P = 0 (left side)
+P_near_zero_neg = abs(P) < 0.1*max(abs(P)) & E_field < 0;
+if any(P_near_zero_neg)
+    indices_neg = find(P_near_zero_neg);
+    [~, min_idx] = min(abs(P(indices_neg)));
+    Ec_neg = E_field(indices_neg(min_idx));
+else
+    Ec_neg = NaN;
+end
+Ec = (abs(Ec_pos) + abs(Ec_neg)) / 2;   % Average coercive field
+
+% 5. Maximum (Saturation) Polarization
+Ps_pos = max(P);
+Ps_neg = min(P);
+Ps = (abs(Ps_pos) + abs(Ps_neg)) / 2;
+
+% Find indices for annotations
+[~, idx_Ps_pos] = max(P);
+[~, idx_Ps_neg] = min(P);
+idx_Pr_pos = E_pos_indices(idx_E0_pos);
+idx_Pr_neg = E_neg_indices(idx_E0_neg);
+
+% 6. Electric Field at Ps
+Es_pos = abs(E_field(idx_Ps_pos));
+Es_neg = -abs(E_field(idx_Ps_neg));
+Es = (Es_pos - Es_neg) / 2;
+
+%%% Annotate Key Values
+% Positive Saturation Polarization (+Ps)
+h1 = plot(E_field(idx_Ps_pos)/1e6, P(idx_Ps_pos)*1e6, 'ks', ...
+    'MarkerSize', 10, 'MarkerFaceColor', 'g', 'LineWidth', 1.5);
+
+% Negative Saturation Polarization (-Ps)
+plot(E_field(idx_Ps_neg)/1e6, P(idx_Ps_neg)*1e6, 'ks', ...
+    'MarkerSize', 10, 'MarkerFaceColor', 'g', 'LineWidth', 1.5);
+
+% Positive Remanent Polarization (+Pr)
+h2 = plot(0, Pr_pos*1e6, 'ks', 'MarkerSize', 10, 'MarkerFaceColor', 'm', 'LineWidth', 1.5);
+
+% Negative Remanent Polarization (-Pr)
+plot(0, Pr_neg*1e6, 'ks', 'MarkerSize', 10, 'MarkerFaceColor', 'm', 'LineWidth', 1.5);
+
+% Positive Coercive Field (+Ec)
+h3 = [];
+if ~isnan(Ec_pos)
+    h3 = plot(Ec_pos/1e6, 0, 'ks', 'MarkerSize', 10, 'MarkerFaceColor', 'y', 'LineWidth', 1.5);
+end
+
+% Negative Coercive Field (-Ec)
+if ~isnan(Ec_neg)
+    plot(Ec_neg/1e6, 0, 'ks', 'MarkerSize', 10, 'MarkerFaceColor', 'y', 'LineWidth', 1.5);
+end
+
+hold off;
+
+xlabel('Electric Field (MV m^{-1})', 'FontSize', 12, 'FontWeight', 'bold');
+ylabel('Polarization (\muC m^{-2})', 'FontSize', 12, 'FontWeight', 'bold');
+title('Ferroelectric Hysteresis Loop', 'FontSize', 14, 'FontWeight', 'bold');
+grid on;
+xline(0, 'k--', 'LineWidth', 0.8);
+yline(0, 'k--', 'LineWidth', 0.8);
+box on;
+
+%%% Add legend
+if ~isempty(h3)
+    legend([h1, h2, h3], ...
+        'Saturation Polarization (P_s)', ...
+        'Remanent Polarization (P_r)', ...
+        'Coercive Field (E_c)', ...
+        'Location', 'best', 'FontSize', 10);
+else
+    legend([h1, h2], ...
+        'Saturation Polarization (P_s)', ...
+        'Remanent Polarization (P_r)', ...
+        'Location', 'best', 'FontSize', 10);
+end
+
+%% Print summary to console
+fprintf('\n=== Ferroelectric Parameters ===\n');
+fprintf('Saturation Polarization (Ps): %.2f µC/m²\n', Ps*1e6);
+fprintf('  at Electric Field (Es): %.2f MV/m\n', Es/1e6);
+fprintf('Remanent Polarization (Pr): %.2f µC/m²\n', Pr*1e6);
+fprintf('Coercive Field (Ec): %.2f MV/m\n', Ec/1e6);
+fprintf('\nDetailed values:\n');
+fprintf('  +Ps = %.2f µC/m² at +Es = %.2f MV/m\n', Ps_pos*1e6, Es_pos/1e6);
+fprintf('  -Ps = %.2f µC/m² at -Es = %.2f MV/m\n', Ps_neg*1e6, Es_neg/1e6);
+fprintf('  +Pr = %.2f µC/m², -Pr = %.2f µC/m²\n', Pr_pos*1e6, Pr_neg*1e6);
+fprintf('  +Ec = %.2f MV/m, -Ec = %.2f MV/m\n', Ec_pos/1e6, Ec_neg/1e6);

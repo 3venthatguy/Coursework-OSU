@@ -1,9 +1,8 @@
-%% Load your two CSV files
-data_pos = readmatrix("/Users/evansmacbookair/Downloads/TempDownloads/380P.csv");
-data_neg = readmatrix("/Users/evansmacbookair/Downloads/TempDownloads/380N.csv");
-
-% data_pos = readmatrix('positive_Pr.csv');
-% data_neg = readmatrix('negative_Pr.csv');
+%% Load Clipped CSV files
+%TODO: Add filepath to positive and negative horizontal voltage offset
+% datafiles
+data_pos = readmatrix();
+data_neg = readmatrix();
 
 time_pos = data_pos(:, 1);
 CH1_pos = data_pos(:, 2) * 10;  % Account for 10x amplifier
@@ -45,22 +44,22 @@ figure(1);
 plot(CH1_smooth, CH2_smooth, 'b-', 'LineWidth', 1.5);
 xlabel('CH1 Voltage (V)', 'FontSize', 12, 'FontWeight', 'bold');
 ylabel('CH2 Voltage (V)', 'FontSize', 12, 'FontWeight', 'bold');
-title('Hysteresis Loop (Smoothed)', 'FontSize', 14, 'FontWeight', 'bold');
+title('Hysteresis Loop', 'FontSize', 14, 'FontWeight', 'bold');
 xline(0, 'k--', 'LineWidth', 0.8);
 yline(0, 'k--', 'LineWidth', 0.8);
 
 
 %% Non-Annotated Hysteresis Loop E-field vs Polarization
 
-% Sample parameters (adjust to your actual values)
-A = 1e-4;      % Sample area (m²)
-d = 1e-3;      % Sample thickness (m)
-C_ref = 100e-9; % Reference capacitor (F)
+%TODO: Add parameters for the ferroelectric capacitor
+A =                                 % Sample area (m²)
+d =                                 % Sample thickness (m)
+C_ref =                             % Reference capacitor (F)
 
 % Calculate E-field and Polarization
-E_field = CH1_smooth / d;          % V/m
-Q = C_ref * CH2_smooth;            % Coulombs
-P = Q / A;                           % C/m²
+E_field = CH1_smooth / d;           % V/m
+Q = C_ref * CH2_smooth;             % Coulombs
+P = Q / A;                          % C/m²
 
 figure(2);
 plot(E_field/1e6, P*1e6, 'r-', 'LineWidth', 1);
@@ -143,16 +142,16 @@ Ps_pos = max(P);
 Ps_neg = min(P);
 Ps = (abs(Ps_pos) + abs(Ps_neg)) / 2;
 
-% 6. Electric Field at Ps
-Es_pos = abs(E_field(idx_Ps_pos));
-Es_neg = -abs(E_field(idx_Ps_neg));
-Es = (Es_pos - Es_neg) / 2;
-
 % Find indices for annotations
 [~, idx_Ps_pos] = max(P);
 [~, idx_Ps_neg] = min(P);
 idx_Pr_pos = E_pos_indices(idx_E0_pos);
 idx_Pr_neg = E_neg_indices(idx_E0_neg);
+
+% 6. Electric Field at Ps
+Es_pos = abs(E_field(idx_Ps_pos));
+Es_neg = -abs(E_field(idx_Ps_neg));
+Es = (Es_pos - Es_neg) / 2;
 
 %%% Annotate Key Values
 % Positive Saturation Polarization (+Ps)
