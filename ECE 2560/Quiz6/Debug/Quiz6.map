@@ -1,7 +1,7 @@
 ******************************************************************************
-                  MSP430 Linker PC v21.6.1                     
+                  MSP430 Linker Unix v21.6.1                   
 ******************************************************************************
->> Linked Tue Nov 18 16:37:34 2025
+>> Linked Wed Nov 19 15:20:54 2025
 
 OUTPUT FILE NAME:   <Quiz6.out>
 ENTRY POINT SYMBOL: "RESET"  address: 00004400
@@ -19,7 +19,7 @@ MEMORY CONFIGURATION
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
   RAM                   00001c00   00000800  00000000  00000800  RWIX
-  FRAM                  00004400   0000bb80  00000086  0000bafa  RWIX
+  FRAM                  00004400   0000bb80  00000084  0000bafc  RWIX
   JTAGSIGNATURE         0000ff80   00000004  00000004  00000000  RWIX  ffff 
   BSLSIGNATURE          0000ff84   00000004  00000004  00000000  RWIX  ffff 
   IPESIGNATURE          0000ff88   00000008  00000008  00000000  RWIX  ffff 
@@ -115,12 +115,12 @@ section   page    origin      length       input sections
 .init_array 
 *          0    00004400    00000000     UNINITIALIZED
 
-.text      0    00004400    0000007e     
-                  00004400    0000007e     main.obj (.text)
+.text      0    00004400    0000007c     
+                  00004400    0000007c     main.obj (.text)
 
 .text:_isr 
-*          0    0000447e    00000008     
-                  0000447e    00000008     rts430x_sc_sd_eabi.lib : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
+*          0    0000447c    00000008     
+                  0000447c    00000008     rts430x_sc_sd_eabi.lib : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
 
 .stack     0    00002400    00000000     
 
@@ -234,12 +234,12 @@ MODULE SUMMARY
 
        Module             code   ro data   rw data
        ------             ----   -------   -------
-    .\
-       main.obj           126    4         0      
+    ./
+       main.obj           124    4         0      
     +--+------------------+------+---------+---------+
-       Total:             126    4         0      
+       Total:             124    4         0      
                                                   
-    C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\rts430x_sc_sd_eabi.lib
+    /Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/rts430x_sc_sd_eabi.lib
        isr_trap.asm.obj   8      0         0      
        int27.asm.obj      0      2         0      
        int28.asm.obj      0      2         0      
@@ -272,7 +272,7 @@ MODULE SUMMARY
        Total:             8      54        0      
                                                   
     +--+------------------+------+---------+---------+
-       Grand Total:       134    58        0      
+       Grand Total:       132    58        0      
 
 
 GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
@@ -1658,7 +1658,7 @@ address   name
 0000015c  WDTCTL_L            
 00002400  __STACK_END         
 00000000  __STACK_SIZE        
-0000447e  __TI_ISR_TRAP       
+0000447c  __TI_ISR_TRAP       
 0000ffc6  __TI_int27          
 0000ffc8  __TI_int28          
 0000ffca  __TI_int29          
@@ -3093,7 +3093,7 @@ address   name
 00004400  fram_ipe_start      
 00004400  fram_rw_start       
 00004400  fram_rx_start       
-0000447e  __TI_ISR_TRAP       
+0000447c  __TI_ISR_TRAP       
 0000a501  mpu_ctl0_value      
 0000ffc6  __TI_int27          
 0000ffc8  __TI_int28          

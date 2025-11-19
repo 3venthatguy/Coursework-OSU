@@ -76,7 +76,7 @@ S1_ISR:
 
 			; Clear the interrupt flag
 			bic.b 	#BIT1, &P1IFG
-			jmp		S1_ISR
+			;jmp		S1_ISR
 
 S2_ISR:
 			; Check the source of the interrupt - S1 (P1.2)
