@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <link_info>
-   <banner>MSP430 Linker Unix v21.6.1.LTS</banner>
+   <banner>MSP430 Linker PC v21.6.1.LTS</banner>
    <copyright>Copyright (c) 2003-2018 Texas Instruments Incorporated</copyright>
-   <link_time>0x691e26a6</link_time>
+   <link_time>0x69330690</link_time>
    <link_errors>0x0</link_errors>
    <output_file>Quiz6.out</output_file>
    <entry_point>
@@ -11,7 +11,7 @@
    </entry_point>
    <input_file_list>
       <input_file id="fl-2">
-         <path>./</path>
+         <path>.\</path>
          <kind>object</kind>
          <file>main.obj</file>
          <name>main.obj</name>
@@ -22,199 +22,199 @@
          <name>&lt;internal&gt;</name>
       </input_file>
       <input_file id="fl-29">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int27.asm.obj</name>
       </input_file>
       <input_file id="fl-2a">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>isr_trap.asm.obj</name>
       </input_file>
       <input_file id="fl-2b">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int28.asm.obj</name>
       </input_file>
       <input_file id="fl-2c">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int29.asm.obj</name>
       </input_file>
       <input_file id="fl-2d">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int30.asm.obj</name>
       </input_file>
       <input_file id="fl-2e">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int31.asm.obj</name>
       </input_file>
       <input_file id="fl-2f">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int32.asm.obj</name>
       </input_file>
       <input_file id="fl-30">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int33.asm.obj</name>
       </input_file>
       <input_file id="fl-31">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int34.asm.obj</name>
       </input_file>
       <input_file id="fl-32">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int35.asm.obj</name>
       </input_file>
       <input_file id="fl-33">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int36.asm.obj</name>
       </input_file>
       <input_file id="fl-34">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int38.asm.obj</name>
       </input_file>
       <input_file id="fl-35">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int39.asm.obj</name>
       </input_file>
       <input_file id="fl-36">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int40.asm.obj</name>
       </input_file>
       <input_file id="fl-37">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int41.asm.obj</name>
       </input_file>
       <input_file id="fl-38">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int42.asm.obj</name>
       </input_file>
       <input_file id="fl-39">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int43.asm.obj</name>
       </input_file>
       <input_file id="fl-3a">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int44.asm.obj</name>
       </input_file>
       <input_file id="fl-3b">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int45.asm.obj</name>
       </input_file>
       <input_file id="fl-3c">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int46.asm.obj</name>
       </input_file>
       <input_file id="fl-3d">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int47.asm.obj</name>
       </input_file>
       <input_file id="fl-3e">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int48.asm.obj</name>
       </input_file>
       <input_file id="fl-3f">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int49.asm.obj</name>
       </input_file>
       <input_file id="fl-40">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int50.asm.obj</name>
       </input_file>
       <input_file id="fl-41">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int51.asm.obj</name>
       </input_file>
       <input_file id="fl-42">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int52.asm.obj</name>
       </input_file>
       <input_file id="fl-43">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int53.asm.obj</name>
       </input_file>
       <input_file id="fl-44">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>int54.asm.obj</name>
       </input_file>
       <input_file id="fl-45">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>mult16_f5hw.asm.obj</name>
       </input_file>
       <input_file id="fl-46">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>mult32_f5hw.asm.obj</name>
       </input_file>
       <input_file id="fl-47">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>mult64_f5hw.asm.obj</name>
       </input_file>
       <input_file id="fl-48">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>mult1632_f5hw.asm.obj</name>
       </input_file>
       <input_file id="fl-49">
-         <path>/Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/</path>
+         <path>C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\</path>
          <kind>archive</kind>
          <file>rts430x_sc_sd_eabi.lib</file>
          <name>mult3264_f5hw.asm.obj</name>
@@ -461,21 +461,21 @@
          <name>.debug_info</name>
          <load_address>0x0</load_address>
          <run_address>0x0</run_address>
-         <size>0xdb</size>
+         <size>0xeb</size>
          <input_file_ref idref="fl-2"/>
       </object_component>
-      <object_component id="oc-608">
+      <object_component id="oc-60a">
          <name>.debug_info</name>
-         <load_address>0xdb</load_address>
-         <run_address>0xdb</run_address>
-         <size>0xf6</size>
+         <load_address>0xeb</load_address>
+         <run_address>0xeb</run_address>
+         <size>0xdd</size>
          <input_file_ref idref="fl-2a"/>
       </object_component>
       <object_component id="oc-671">
          <name>.debug_info</name>
-         <load_address>0x1d1</load_address>
-         <run_address>0x1d1</run_address>
-         <size>0xaf</size>
+         <load_address>0x1c8</load_address>
+         <run_address>0x1c8</run_address>
+         <size>0xbf</size>
       </object_component>
       <object_component id="oc-7f">
          <name>.debug_line</name>
@@ -484,7 +484,7 @@
          <size>0x59</size>
          <input_file_ref idref="fl-2"/>
       </object_component>
-      <object_component id="oc-60b">
+      <object_component id="oc-609">
          <name>.debug_line</name>
          <load_address>0x59</load_address>
          <run_address>0x59</run_address>
@@ -518,7 +518,7 @@
          <size>0x20</size>
          <input_file_ref idref="fl-2"/>
       </object_component>
-      <object_component id="oc-609">
+      <object_component id="oc-608">
          <name>.debug_aranges</name>
          <load_address>0x20</load_address>
          <run_address>0x20</run_address>
@@ -532,7 +532,7 @@
          <size>0x2a</size>
          <input_file_ref idref="fl-2"/>
       </object_component>
-      <object_component id="oc-60a">
+      <object_component id="oc-60b">
          <name>.debug_pubnames</name>
          <load_address>0x2a</load_address>
          <run_address>0x2a</run_address>
@@ -1261,10 +1261,10 @@
          <name>.debug_info</name>
          <load_address>0x0</load_address>
          <run_address>0x0</run_address>
-         <size>0x280</size>
+         <size>0x287</size>
          <contents>
             <object_component_ref idref="oc-7c"/>
-            <object_component_ref idref="oc-608"/>
+            <object_component_ref idref="oc-60a"/>
             <object_component_ref idref="oc-671"/>
          </contents>
       </logical_group>
@@ -1275,7 +1275,7 @@
          <size>0x96</size>
          <contents>
             <object_component_ref idref="oc-7f"/>
-            <object_component_ref idref="oc-60b"/>
+            <object_component_ref idref="oc-609"/>
          </contents>
       </logical_group>
       <logical_group id="lg-669" display="never" color="cyan">
@@ -1296,7 +1296,7 @@
          <size>0x40</size>
          <contents>
             <object_component_ref idref="oc-7d"/>
-            <object_component_ref idref="oc-609"/>
+            <object_component_ref idref="oc-608"/>
          </contents>
       </logical_group>
       <logical_group id="lg-66d" display="never" color="cyan">
@@ -1306,7 +1306,7 @@
          <size>0x55</size>
          <contents>
             <object_component_ref idref="oc-7e"/>
-            <object_component_ref idref="oc-60a"/>
+            <object_component_ref idref="oc-60b"/>
          </contents>
       </logical_group>
       <logical_group id="lg-673" display="no" color="cyan">

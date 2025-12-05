@@ -1,7 +1,7 @@
 ******************************************************************************
-                  MSP430 Linker Unix v21.6.1                   
+                  MSP430 Linker PC v21.6.1                     
 ******************************************************************************
->> Linked Wed Nov 19 15:20:54 2025
+>> Linked Fri Dec  5 11:21:36 2025
 
 OUTPUT FILE NAME:   <Quiz6.out>
 ENTRY POINT SYMBOL: "RESET"  address: 00004400
@@ -234,12 +234,12 @@ MODULE SUMMARY
 
        Module             code   ro data   rw data
        ------             ----   -------   -------
-    ./
+    .\
        main.obj           124    4         0      
     +--+------------------+------+---------+---------+
        Total:             124    4         0      
                                                   
-    /Applications/ti/ccs1281/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib/rts430x_sc_sd_eabi.lib
+    C:\ti\ccs1281\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\rts430x_sc_sd_eabi.lib
        isr_trap.asm.obj   8      0         0      
        int27.asm.obj      0      2         0      
        int28.asm.obj      0      2         0      
