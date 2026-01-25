@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.internal.QuickAccess">
+		<item key="org.eclipse.ui.internal.quickaccess.QuickAccessDialogDIALOG_WIDTH" value="450"/>
+		<item key="org.eclipse.ui.internal.quickaccess.QuickAccessDialogDIALOG_HEIGHT" value="506"/>
+		<item key="org.eclipse.ui.internal.quickaccess.QuickAccessDialogDIALOG_USE_PERSISTED_SIZE" value="true"/>
+		<item key="org.eclipse.ui.internal.quickaccess.QuickAccessDialogDIALOG_USE_PERSISTED_LOCATION" value="false"/>
+		<list key="orderedElements">
+			<item value="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser"/>
+		</list>
+		<list key="orderedProviders">
+			<item value="org.eclipse.e4.ui.parts"/>
+		</list>
+		<list key="textEntries">
+			<item value="1"/>
+		</list>
+		<list key="textArray">
+			<item value="memory b"/>
+		</list>
+	</section>
+	<section name="NewWizardAction">
+	</section>
+	<section name="ImportExportAction">
+	</section>
+	<section name="MemoryDumperLoadAction">
+		<item key="MemoryDumperFileSelectionPage.STORE_FILE_PATH_ID" value="C:\Users\evanm\OneDrive\Desktop\Github Projects\OSU-Classes\ECE 2560\ECE2560_Project1\sine_Q6.dat"/>
+		<item key="MemoryDumperFileSelectionPage.STORE_FILETYPE_ID" value="TI Data"/>
+		<item key="MemoryDumperFileSelectionPage.STORE_USE_FILE_HEADER" value="true"/>
+		<item key="MemoryDumperMemoryBlockPage.STORE_FILE_FORMAT_TYPE_ID" value="16-Bit UnSigned Int"/>
+		<item key="MemoryDumperMemoryBlockPage.STORE_ADDRESS_EXPRESSION_ID" value="0x4400"/>
+		<item key="MemoryDumperMemoryBlockPage.STORE_SIZE_ID" value="0x40"/>
+		<item key="MemoryDumperMemoryBlockPage.STORE_PAGE_ID" value=""/>
+		<item key="MemoryDumperMemoryBlockPage.STORE_SWAP_ID" value="false"/>
+		<item key="MemoryDumperMemoryBlockPage.STORE_TYPE_SIZE_ID" value="0"/>
+		<item key="MemoryDumperMemoryBlockPage.STORE_TYPE_SIZE_VALUE_ID" value="8"/>
+		<item key="MemoryDumperMemoryBlockPage.STORE_APPEND_ID" value="false"/>
+		<list key="MemoryDumperMemoryBlockPage.STORE_ADDRESS_VALUE_ID">
+			<item value="4400"/>
+		</list>
+		<list key="MemoryDumperMemoryBlockPage.STORE_SIZE_VALUE_ID">
+			<item value="40"/>
+		</list>
+	</section>
+</section>

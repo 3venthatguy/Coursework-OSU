@@ -1,0 +1,9 @@
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86_64
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
+configDescList=org.eclipse.launchbar.core.descriptorType.default\:ECE 2560 Midterm1,org.eclipse.launchbar.core.descriptorType.default\:ECE2560_Project1,org.eclipse.launchbar.core.descriptorType.default\:ECE_2560_Quiz3,org.eclipse.launchbar.core.descriptorType.default\:ECE_2560_Quiz4,org.eclipse.launchbar.core.descriptorType.default\:Quiz6,org.eclipse.launchbar.core.descriptorType.default\:ECE 2560 Midterm2,org.eclipse.launchbar.core.descriptorType.default\:Midterm2_extra,org.eclipse.launchbar.core.descriptorType.default\:test,org.eclipse.launchbar.core.descriptorType.default\:Final
+eclipse.preferences.version=1
+org.eclipse.launchbar.core.descriptorType.default\:ECE\ 2560\ Midterm1/activeLaunchMode=debug
+org.eclipse.launchbar.core.descriptorType.default\:ECE\ 2560\ Midterm1/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
+org.eclipse.launchbar.core.descriptorType.default\:ECE_2560_Quiz3/activeLaunchMode=debug
+org.eclipse.launchbar.core.descriptorType.default\:ECE_2560_Quiz3/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local

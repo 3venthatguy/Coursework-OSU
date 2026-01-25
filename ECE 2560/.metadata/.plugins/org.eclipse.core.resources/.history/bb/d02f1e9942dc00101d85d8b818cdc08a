@@ -1,0 +1,79 @@
+;-------------------------------------------------------------------------------
+; ECE 2560 Final Exam Part 1
+;
+; Name: Evan Menges.24
+;-------------------------------------------------------------------------------
+            .cdecls C,LIST,"msp430.h"       ; Include device header file
+            
+;-------------------------------------------------------------------------------
+            .def    RESET                   ; Export program entry-point to
+                                            ; make it known to linker.
+;-------------------------------------------------------------------------------
+            .text                           ; Assemble into program memory.
+            .retain                         ; Override ELF conditional linking
+                                            ; and retain current section.
+            .retainrefs                     ; And retain any sections that have
+                                            ; references to current section.
+
+;-------------------------------------------------------------------------------
+RESET       mov.w   #__STACK_END,SP         ; Initialize stackpointer
+StopWDT     mov.w   #WDTPW|WDTHOLD,&WDTCTL  ; Stop watchdog timer
+
+
+;-------------------------------------------------------------------------------
+; Main loop here
+;-------------------------------------------------------------------------------
+
+            ; Configure red LED on P1.0
+            bis.b   #BIT0, &P1DIR
+            bis.b   #BIT0, &P1OUT    ; Start ON
+
+            ; Configure green LED on P9.7
+            bic.b   #BIT7, &P9OUT    ; Start OFF
+            bis.b   #BIT7, &P9DIR
+
+			; Disable the GPIO power-on default high-impedance mode
+			bic.w	#LOCKLPM5, &PM5CTL0
+
+; Configure Timer B0 to raise interrupts
+			bis.w	#TBCLR, &TB0CTL
+			bis.w	#TBSSEL__ACLK, &TB0CTL		; connected to ACLK
+			bis.w	#MC__CONTINUOUS, &TB0CTL	; continuous mode
+			bis.w	#CNTL__12, &TB0CTL			; counter length = 12 bits
+			bis.w	#ID__4, &TB0CTL				; input divider
+			bis.w	#TBIE, &TB0CTL 				; enable interrupts
+
+main:
+			; Enter Low Power Mode 3 with interrupts enabled
+			; MCU wakes up on button press interrupt
+			nop							; Required before setting GIE
+			bis.w	#GIE|LPM3, SR
+			nop							; CPU resumes here after interrupt
+			jmp 	main
+
+;-------------------------------------------------------------------------------
+; Interrupt Service Routine
+;-------------------------------------------------------------------------------
+Timer_B0_ISR:
+			bic.w   #TBIFG, &TB0CTL        ; Clear interrupt flag only
+
+			bis.b	#BIT0, &P1OUT		; Red LED on
+			bis.b	#BIT7, &P9OUT		; Green LED on
+
+			reti						; Return from interrupt
+
+;-------------------------------------------------------------------------------
+; Stack Pointer definition
+;-------------------------------------------------------------------------------
+            .global __STACK_END
+            .sect   .stack
+
+;-------------------------------------------------------------------------------
+; Interrupt Vectors
+;-------------------------------------------------------------------------------
+            .sect 	".int37"
+            .short 	Timer_B0_ISR
+
+            .sect   ".reset"                ; MSP430 RESET Vector
+            .short  RESET
+

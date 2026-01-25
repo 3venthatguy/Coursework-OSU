@@ -1,0 +1,8 @@
+
+**** Build of configuration Debug for project ECE_2560_Quiz3 ****
+
+"C:\\ti\\ccs1281\\ccs\\utils\\bin\\gmake" -k -j 20 all -O 
+ 
+gmake[1]: 'ECE_2560_Quiz3.out' is up to date.
+
+**** Build Finished ****

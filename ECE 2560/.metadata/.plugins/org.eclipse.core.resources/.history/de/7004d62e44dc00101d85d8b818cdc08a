@@ -1,0 +1,143 @@
+;-------------------------------------------------------------------------------
+; ECE 2560 Final Exam Part 1
+;
+; Name: Evan Menges.24
+;-------------------------------------------------------------------------------
+            .cdecls C,LIST,"msp430.h"       ; Include device header file
+            
+;-------------------------------------------------------------------------------
+            .def    RESET                   ; Export program entry-point to
+                                            ; make it known to linker.
+;-------------------------------------------------------------------------------
+            .text                           ; Assemble into program memory.
+            .retain                         ; Override ELF conditional linking
+                                            ; and retain current section.
+            .retainrefs                     ; And retain any sections that have
+                                            ; references to current section.
+
+;-------------------------------------------------------------------------------
+RESET       mov.w   #__STACK_END,SP         ; Initialize stackpointer
+StopWDT     mov.w   #WDTPW|WDTHOLD,&WDTCTL  ; Stop watchdog timer
+
+
+;-------------------------------------------------------------------------------
+; Main loop here
+;-------------------------------------------------------------------------------
+
+            ; Configure red LED on P1.0
+            bis.b   #BIT0, &P1DIR
+            bis.b   #BIT0, &P1OUT    ; Start ON
+
+            ; Configure green LED on P9.7
+            bic.b   #BIT7, &P9OUT    ; Start OFF
+            bis.b   #BIT7, &P9DIR
+
+			; Disable the GPIO power-on default high-impedance mode
+			; bic.w	#LOCKLPM5, &PM5CTL0
+
+			mov.w   #0, R4                  ; Initialize state counter to 0
+
+; Configure Timer B0 to raise interrupts
+			bis.w	#TBCLR, &TB0CTL
+			bis.w	#TBSSEL__ACLK, &TB0CTL		; connected to ACLK
+			bis.w	#MC__CONTINUOUS, &TB0CTL	; continuous mode
+			bis.w	#CNTL__12, &TB0CTL			; counter length = 12 bits
+			bis.w	#ID__4, &TB0CTL				; input divider
+			bis.w	#TBIE, &TB0CTL 				; enable interrupts
+
+main:
+			; Enter Low Power Mode 3 with interrupts enabled
+			; MCU wakes up on button press interrupt
+			nop							; Required before setting GIE
+			bis.w	#GIE|LPM3, SR
+			nop							; CPU resumes here after interrupt
+			jmp 	main
+
+;-------------------------------------------------------------------------------
+; Interrupt Service Routine
+;-------------------------------------------------------------------------------
+Timer_B0_ISR:
+            bic.w   #TBIFG, &TB0CTL             ; Clear interrupt flag
+
+            ; State machine: Red-Red-Green-Green with off cycles
+            ; 0: Red on,  1: Off,  2: Red on,  3: Off
+            ; 4: Green on, 5: Off, 6: Green on, 7: Off
+
+            cmp.w   #0, R4
+            jne     check_state1
+            bis.b   #BIT0, &P1OUT               ; Red on
+            bic.b   #BIT7, &P9OUT               ; Green off
+            jmp     increment_state
+
+check_state1:
+            cmp.w   #1, R4
+            jne     check_state2
+            bic.b   #BIT0, &P1OUT               ; Red off
+            bic.b   #BIT7, &P9OUT               ; Green off
+            jmp     increment_state
+
+check_state2:
+            cmp.w   #2, R4
+            jne     check_state3
+            bis.b   #BIT0, &P1OUT               ; Red on
+            bic.b   #BIT7, &P9OUT               ; Green off
+            jmp     increment_state
+
+check_state3:
+            cmp.w   #3, R4
+            jne     check_state4
+            bic.b   #BIT0, &P1OUT               ; Red off
+            bic.b   #BIT7, &P9OUT               ; Green off
+            jmp     increment_state
+
+check_state4:
+            cmp.w   #4, R4
+            jne     check_state5
+            bic.b   #BIT0, &P1OUT               ; Red off
+            bis.b   #BIT7, &P9OUT               ; Green on
+            jmp     increment_state
+
+check_state5:
+            cmp.w   #5, R4
+            jne     check_state6
+            bic.b   #BIT0, &P1OUT               ; Red off
+            bic.b   #BIT7, &P9OUT               ; Green off
+            jmp     increment_state
+
+check_state6:
+            cmp.w   #6, R4
+            jne     check_state7
+            bic.b   #BIT0, &P1OUT               ; Red off
+            bis.b   #BIT7, &P9OUT               ; Green on
+            jmp     increment_state
+
+check_state7:
+            cmp.w   #7, R4
+            jne     increment_state
+            bic.b   #BIT0, &P1OUT               ; Red off
+            bic.b   #BIT7, &P9OUT               ; Green off
+
+increment_state:
+            inc.w   R4
+            cmp.w   #8, R4
+            jl      exit_isr
+            mov.w   #0, R4                      ; Reset to state 0
+
+exit_isr:
+            reti
+
+;-------------------------------------------------------------------------------
+; Stack Pointer definition
+;-------------------------------------------------------------------------------
+            .global __STACK_END
+            .sect   .stack
+
+;-------------------------------------------------------------------------------
+; Interrupt Vectors
+;-------------------------------------------------------------------------------
+            .sect 	".int37"
+            .short 	Timer_B0_ISR
+
+            .sect   ".reset"                ; MSP430 RESET Vector
+            .short  RESET
+
