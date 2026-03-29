@@ -1,9 +1,9 @@
 clear; clc; close all;
 
 %% Load and Prepare Data
-data = readmatrix("C:\Users\evanm\Downloads\TempDownloads\260.csv");
+data = readmatrix("C:\Users\evanm\OneDrive\Desktop\260.csv");
 
-time = data(:, 1);
+time_sorted = data(:, 1);
 CH1 = data(:, 2) * 10;  % Account for 10x amplifier
 CH2 = data(:, 3);
 
@@ -27,22 +27,23 @@ yline(0, 'k--', 'LineWidth', 0.8);
 
 % Sample parameters (adjust to your actual values)
 A = (1.58e-3) * (3.89e-3);          % Sample area (m²)
-d = 5e-4;                           % Sample thickness (m)
-C_ref = 1e-7;                       % Reference capacitor (F)
+d = 0.5e-3;                           % Sample thickness (m)
+C_ref = 1e-6;                       % Reference capacitor (F)
 
 % Calculate E-field and Polarization
 E_field = CH1_smooth / d;           % V/m
 Q = C_ref * CH2_smooth;             % Coulombs
 P = Q / A;                          % C/m²
 
+
 figure(2);
-plot(E_field/1e6, P*1e6, 'r-', 'LineWidth', 1);
+plot(E_field, P, 'r-', 'LineWidth', 1);   % E in V/m, P in C/m²
 hold on;
 
 % Add time-spaced markers
 time_interval = 0.003; % Time spacing in seconds (adjust this)
 % Find indices corresponding to this time interval
-time_diff = diff(time);
+time_diff = diff(time_sorted);
 cumulative_time = [0; cumsum(time_diff)];
 
 % Select points at regular time intervals
@@ -56,14 +57,14 @@ end
 % Remove duplicate indices
 marker_indices = unique(marker_indices);
 
-% Plot markers
-plot(E_field(marker_indices)/1e6, P(marker_indices)*1e6, ...
+% Plot markers — E in V/m, P in C/m²
+plot(E_field(marker_indices), P(marker_indices), ...
      'ro', 'MarkerSize', 9, 'MarkerFaceColor', 'r');
 
 hold off;
 
-xlabel('Electric Field (MV m^{-1})', 'FontSize', 12, 'FontWeight', 'bold');
-ylabel('Polarization (\muC m^{-2})', 'FontSize', 12, 'FontWeight', 'bold');
+xlabel('Electric Field (V m^{-1})', 'FontSize', 12, 'FontWeight', 'bold');
+ylabel('Polarization (C m^{-2})', 'FontSize', 12, 'FontWeight', 'bold');
 title('Ferroelectric Hysteresis Loop', 'FontSize', 14, 'FontWeight', 'bold');
 grid on;
 xline(0, 'k--', 'LineWidth', 0.8);
@@ -73,7 +74,7 @@ box on;
 %% Annotated Hysteresis Loop E-field vs Polarization
 
 figure(3)
-plot(E_field/1e6, P*1e6, 'r-', 'LineWidth', 2);
+plot(E_field, P, 'r-', 'LineWidth', 2);   % E in V/m, P in C/m²
 hold on;
 
 %%% Extract key parameters
@@ -127,36 +128,36 @@ Es_pos = abs(E_field(idx_Ps_pos));
 Es_neg = -abs(E_field(idx_Ps_neg));
 Es = (Es_pos - Es_neg) / 2;
 
-%%% Annotate Key Values
+%%% Annotate Key Values — all plot calls use E (V/m) and P in C/m²
 % Positive Saturation Polarization (+Ps)
-h1 = plot(E_field(idx_Ps_pos)/1e6, P(idx_Ps_pos)*1e6, 'ks', ...
+h1 = plot(E_field(idx_Ps_pos), P(idx_Ps_pos), 'ks', ...
     'MarkerSize', 10, 'MarkerFaceColor', 'g', 'LineWidth', 1.5);
 
 % Negative Saturation Polarization (-Ps)
-plot(E_field(idx_Ps_neg)/1e6, P(idx_Ps_neg)*1e6, 'ks', ...
+plot(E_field(idx_Ps_neg), P(idx_Ps_neg), 'ks', ...
     'MarkerSize', 10, 'MarkerFaceColor', 'g', 'LineWidth', 1.5);
 
 % Positive Remanent Polarization (+Pr)
-h2 = plot(0, Pr_pos*1e6, 'ks', 'MarkerSize', 10, 'MarkerFaceColor', 'm', 'LineWidth', 1.5);
+h2 = plot(0, Pr_pos, 'ks', 'MarkerSize', 10, 'MarkerFaceColor', 'm', 'LineWidth', 1.5);
 
 % Negative Remanent Polarization (-Pr)
-plot(0, Pr_neg*1e6, 'ks', 'MarkerSize', 10, 'MarkerFaceColor', 'm', 'LineWidth', 1.5);
+plot(0, Pr_neg, 'ks', 'MarkerSize', 10, 'MarkerFaceColor', 'm', 'LineWidth', 1.5);
 
 % Positive Coercive Field (+Ec)
 h3 = [];
 if ~isnan(Ec_pos)
-    h3 = plot(Ec_pos/1e6, 0, 'ks', 'MarkerSize', 10, 'MarkerFaceColor', 'y', 'LineWidth', 1.5);
+    h3 = plot(Ec_pos, 0, 'ks', 'MarkerSize', 10, 'MarkerFaceColor', 'y', 'LineWidth', 1.5);
 end
 
 % Negative Coercive Field (-Ec)
 if ~isnan(Ec_neg)
-    plot(Ec_neg/1e6, 0, 'ks', 'MarkerSize', 10, 'MarkerFaceColor', 'y', 'LineWidth', 1.5);
+    plot(Ec_neg, 0, 'ks', 'MarkerSize', 10, 'MarkerFaceColor', 'y', 'LineWidth', 1.5);
 end
 
 hold off;
 
-xlabel('Electric Field (MV m^{-1})', 'FontSize', 12, 'FontWeight', 'bold');
-ylabel('Polarization (\muC m^{-2})', 'FontSize', 12, 'FontWeight', 'bold');
+xlabel('Electric Field (V m^{-1})', 'FontSize', 12, 'FontWeight', 'bold');
+ylabel('Polarization (C m^{-2})', 'FontSize', 12, 'FontWeight', 'bold');
 title('Ferroelectric Hysteresis Loop', 'FontSize', 14, 'FontWeight', 'bold');
 grid on;
 xline(0, 'k--', 'LineWidth', 0.8);
@@ -179,12 +180,12 @@ end
 
 %% Print summary to console
 fprintf('\n=== Ferroelectric Parameters ===\n');
-fprintf('Saturation Polarization (Ps): %.2f µC/m²\n', Ps*1e6);
-fprintf('  at Electric Field (Es): %.2f MV/m\n', Es/1e6);
-fprintf('Remanent Polarization (Pr): %.2f µC/m²\n', Pr*1e6);
-fprintf('Coercive Field (Ec): %.2f MV/m\n', Ec/1e6);
+fprintf('Saturation Polarization (Ps): %.4e C/m²\n', Ps);
+fprintf('  at Electric Field (Es): %.4f V/m\n', Es);
+fprintf('Remanent Polarization (Pr): %.4e C/m²\n', Pr);
+fprintf('Coercive Field (Ec): %.4f V/m\n', Ec);
 fprintf('\nDetailed values:\n');
-fprintf('  +Ps = %.2f µC/m² at +Es = %.2f MV/m\n', Ps_pos*1e6, Es_pos/1e6);
-fprintf('  -Ps = %.2f µC/m² at -Es = %.2f MV/m\n', Ps_neg*1e6, Es_neg/1e6);
-fprintf('  +Pr = %.2f µC/m², -Pr = %.2f µC/m²\n', Pr_pos*1e6, Pr_neg*1e6);
-fprintf('  +Ec = %.2f MV/m, -Ec = %.2f MV/m\n', Ec_pos/1e6, Ec_neg/1e6);
+fprintf('  +Ps = %.4e C/m² at +Es = %.4f V/m\n', Ps_pos, Es_pos);
+fprintf('  -Ps = %.4e C/m² at -Es = %.4f V/m\n', Ps_neg, Es_neg);
+fprintf('  +Pr = %.4e C/m², -Pr = %.4e C/m²\n', Pr_pos, Pr_neg);
+fprintf('  +Ec = %.4f V/m, -Ec = %.4f V/m\n', Ec_pos, Ec_neg);

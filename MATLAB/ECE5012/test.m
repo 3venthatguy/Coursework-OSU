@@ -1,66 +1,68 @@
 clear; clc; close all;
 
-% Given parameters
-lambda = 1.55e-6;   % um
-a = 0.225e-6;       % um
-n1 = 2.94;  
-ns = 1.46;  
-no = 1.00;
-P = 1;              % W/m
-k0 = 2*pi/lambda;   % Free space wavenumber
+%% Parameters
+lambda = 1.55;          % um
+n1 = 2.31;              % core index
+n2 = 1.46;              % cladding index
+a = 0.225;              % half-width um (2a = 0.45um)
+D = 0.65;               % gap separation um
 
-% Constants
-mu0 = 4e7 * pi;
-omega = 2*pi*3e8/lambda;  % angular frequency
-epsilon0 = 8.854e-12;     % F/m
+%% Waveguide parameters
+k = 2*pi/lambda;
+v = k*a*sqrt(n1^2 - n2^2);
 
-% Linespace range
-x = linspace(-1e-6, 1e-6, 1000);  % um
-
-v = k0*a*sqrt(n1^2 - ns^2);
-
-% Define equation to solve for b
+% Solve TE0 dispersion for b
 eq = @(b) v*sqrt(1-b) - atan(sqrt(b./(1-b)));
-b = fzero(eq, 0.5);
+b = fzero(eq, [0, 0.999]);
 
-ne = sqrt(ns^2 + b*(n1^2 - ns^2));
-beta = k0*ne;
+ne = sqrt(n2^2 + b*(n1^2 - n2^2));
+beta = k*ne;
+K_wg = sqrt(k^2*n1^2 - beta^2);   % transverse wavenumber in core
+Sigma = sqrt(beta^2 - k^2*n2^2);  % evanescent decay in cladding
 
-kappa = k0*sqrt(n1^2 - ne^2);
-gamma = k0*sqrt(ne^2 - ns^2);
+% Normalized parameters
+u = K_wg * a;
+w = Sigma * a;
 
-% Integral of |Hy|^2 for TM0 mode
-integral_Hy2 = 2*a + 1/gamma * (1 + (kappa*sin(2*kappa*a))/(2*kappa*a));
+fprintf('V = %.4f\n', v);
+fprintf('b = %.4f\n', b);
+fprintf('ne = %.4f\n', ne);
+fprintf('beta = %.4f 1/um\n', beta);
+fprintf('K = %.4f 1/um\n', K_wg);
+fprintf('Sigma = %.4f 1/um\n', Sigma);
+fprintf('u = %.4f\n', u);
+fprintf('w = %.4f\n', w);
 
-% From power normalization: P = (beta*omega*epsilon0/2) * integral
-A_squared = (2*P) / (beta*omega*epsilon0*integral_Hy2);
-A = sqrt(A_squared);
+%% Numerator - integration by parts
+% Integrand: cos(K*x) * cos(K*a) * exp(-Sigma*(x - D + a))
+% cos(Ka) and exp terms evaluated at boundary, pulled out
+% Remaining integral: integral of cos(K*x)*exp(-Sigma*x) from -a to a
 
-% Calculate |Hy(x)| for TM0 mode
-Hy = zeros(size(x));
-for i = 1:length(x)
-    if abs(x) <= a
-        Hy(i) = A*cos(kappa*x(i));
-    else
-        Hy(i) = A*cos(kappa*a) * exp(-gamma*(abs(x(i))-a));
-    end
-end
+% Analytical result of integral by parts:
+% integral cos(Kx)*exp(-Sigma*x)dx = 
+% exp(-Sigma*x)*(−Sigma*cos(Kx) + K*sin(Kx)) / (Sigma^2 + K^2)
 
-% Plot
-figure;
-plot(x*1e6, abs(Hy), 'b-', 'LineWidth', 2);
-xlabel('x (µm)', 'FontSize', 12);
-ylabel('|H_y(x)| (A/m)', 'FontSize', 12);
-title('TM_0 Mode Magnetic Field Distribution', 'FontSize', 14);
-grid on;
-ylim([0, max(abs(Hy))]);
-xlim([-1, 1]);
+denom_int = Sigma^2 + K_wg^2;
+upper = exp(-Sigma*a) * (-Sigma*cos(K_wg*a) + K_wg*sin(K_wg*a)) / denom_int;
+lower = exp( Sigma*a) * (-Sigma*cos(K_wg*a) - K_wg*sin(K_wg*a)) / denom_int;
+core_integral = upper - lower;
 
-% Display parameters
-fprintf('v-parameter = %.6f\n', v);
-fprintf('b-parameter = %.6f\n', b);
-fprintf('Effective index n_e = %.6f\n', ne);
-fprintf('Parameter κ = %.6e rad/m\n', kappa);
-fprintf('Parameter γ = %.6e rad/m\n', gamma);
-fprintf('Parameter β = %.6e rad/m\n', beta);
-fprintf('Parameter A = %.6e A/m\n', A);
+% Full numerator prefactor for TM
+% (beta/(w*eps0*n1*n2))^2 but omega*eps0 cancels partially
+% From notes: prefactor is (beta/(omega*eps0*n1*n2))^2
+% omega*eps0 out front cancels one power leaving beta^2/(omega*eps0*n1^2*n2^2)
+
+prefactor_num = (beta^2 / (n1^2 * n2^2));
+K_num = prefactor_num * (n1^2 - n2^2) * cos(K_wg*a) * exp(Sigma*(D-a)) * core_integral;
+
+%% Denominator from notes
+% K_den = (2*beta*a / (omega*eps0*n1^2)) * 
+%         (1 + (2*n2^2/n1^4)*(sin^2(u)/(2w)) + (2/n2^2)*(cos^2(u)/(2w)))
+
+K_den = (2*a / n1^2) * ...
+        (1 + (2*n2^2/n1^4)*(sin(u)^2/(2*w)) + (2/n2^2)*(cos(u)^2/(2*w)));
+
+%% K12
+K12 = K_num / K_den;
+
+fprintf('\nK12 = %.6f 1/um\n', K12);
