@@ -3,19 +3,30 @@ clear; clc; close all;
 rng_seed = 5200;
 [x,M] = gen_input(rng_seed);
 
+%% Task 1
+fprintf('Task 1:\n')
 L1 = 5;
 L2 = 7;
 freq = [0, 0.15, 0.25, 1];
 
-h1 = firpm(L1, freq, [1 1 0 0]); % Lowpass filter h1[n]: length 5, order 4
-h2 = firpm(L2, freq, [0 0 1 1]); % Highpass filter h2[n]: length 7, order 6
+h1 = firpm(L1-1, freq, [1 1 0 0]); % Lowpass filter h1[n]: length 5, order 4
+h2 = firpm(L2-1, freq, [0 0 1 1]); % Highpass filter h2[n]: length 7, order 6
 
-y1 = conv(x, h1);
-y2 = conv(x, h2);
+% Transpose from row vectors to column vectors
+h1 = h1(:);
+h2 = h2(:);
+disp('h1:'); disp(h1);
+disp('h2:'); disp(h2);
+
+y1 = conv(h1, x);
+y2 = conv(h2, x);
 
 Y1 = convmtx_lin(y1, L2);
 Y2 = convmtx_lin(y2, L1);
 A = [Y2, -Y1];
+
+h = [h1; h2];
+identity = A*h;
 
 [~, lambda_max] = eigs(A'*A, 1, 'largestabs');
 [v, ~] = eigs(lambda_max*eye(L1+L2) - A'*A, 1, 'largestabs');
@@ -32,9 +43,53 @@ h2_est = h2_est/sign(h2_est((L2+1)/2));
 
 % Verify normalized error less than 10^-9
 nerr_h = norm([h1 ; h2] - [h1_est ; h2_est])/norm([h1 ; h2]);
+fprintf('Normalized error: %.2e\n', nerr_h);
 
+
+%% Task 3
+fprintf('\nTask 3:\n')
+% Verification of conv_operator
+h_test = randn(L2, 1);
+z_test = randn(length(y1) + L2 - 1, 1);
+
+% Forward check: Y1 * h should equal conv_operator(h, 'notransp', y1)
+yu1 = conv_operator(h_test, 'notransp', y1);
+err_fwd = norm(Y1 * h_test - yu1);
+fprintf('Forward error: %.2e\n', err_fwd);  % should be ~0
+
+% Adjoint check: Y1.'*z should equal conv_operator(z, 'transp', y1)
+yu1_star = conv_operator(z_test, 'transp', y1);
+err_adj = norm(Y1.' * z_test - yu1_star);
+fprintf('Adjoint error: %.2e\n', err_adj);  % should be ~0
+
+%% Task 5
+fprintf('\nTask 5:\n')
+gram_conv_handle = @(hin) gram_two_channel_conv(hin, L1, L2, y1, y2);
+[~, lambda_max] = eigs(gram_conv_handle, L1+L2, 1, ...
+    'largestabs', 'IsFunctionSymmetric', 1);
+
+gram_conv_handle2 = @(hin) lambda_max*hin - gram_two_channel_conv(hin, L1, L2, y1, y2);
+[v_eig, ~] = eigs(gram_conv_handle2, L1+L2, 1, ...
+    'largestabs', 'IsFunctionSymmetric', 1);
+
+v_task5 = v_eig(:, 1);
+h1_est_task5 = v_task5(1:L1);
+h2_est_task5 = v_task5(L1+(1:L2));
+
+% Remove scaling ambiguity
+h_est_task5 = v_task5 / sum(abs(v_task5));
+h_est_task5 = h_est_task5 / sign(h_est_task5((L1+1)/2));
+h1_est_task5 = h_est_task5(1:L1);
+h2_est_task5 = h_est_task5(L1+(1:L2));
+
+% Normalized error
+nerr_h_task5 = norm([h1; h2] - [h1_est_task5; h2_est_task5]) / norm([h1; h2]);
+fprintf('Task 5 normalized error: %.2e\n', nerr_h_task5);
+
+
+%% Functions
 function [x,Lx] = gen_input(rng_seed)
-    % Synthesizes a realistic (speech-like) input x via resonant filters (formants)
+    %Synthesizes a realistic (speech-like) input x via resonant filters (formants)
     rng(rng_seed);
     
     %% ---------------- Parameters ----------------
@@ -92,7 +147,27 @@ end
 function y = conv_operator(x, mode, h)
     if strcmp(mode, 'notransp')
         % Perform the forward operation: y = Y1 * x
-        elseif strcmp(mode, 'transp')
-        % Perform the adjoint operation: y = Y1^star * x
+        % Note, x plays the role of input (y1, y2), h plays the role of the
+        % filter (h1, h2)
+        n = length(x);
+        Y = convmtx_lin(h, n);
+        y = Y * x;
+    elseif strcmp(mode, 'transp')
+        % Perform the adjoint operation: y = Y1^star * xin the 
+        n = length(x) - length(h) + 1;
+        Y = convmtx_lin(h, n);
+        y = Y' * x;
     end
+end
+
+function hout = gram_two_channel_conv(hin, L1, L2, y1, y2)
+    % implement hout = A.’*A hin without constructing A
+    h1 = hin(1:L1);
+    h2 = hin(L1+(1:L2));
+
+    % Compute inner term: w = Y2*h1 - Y1*h2
+    w = conv_operator(h1, 'notransp', y2) - conv_operator(h2, 'notransp', y1);
+
+    % Compute hout = A.'*w = [Y2^T; -Y1^T] * w
+    hout = [conv_operator(w, 'transp', y2); -conv_operator(w, 'transp', y1)];
 end
