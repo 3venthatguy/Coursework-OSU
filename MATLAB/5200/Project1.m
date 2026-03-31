@@ -18,6 +18,12 @@ h2 = h2(:);
 disp('h1:'); disp(h1);
 disp('h2:'); disp(h2);
 
+% Normalize true filters to same convention
+h1_norm = h1/sum(abs(h1));
+h1_norm = h1_norm/sign(h1_norm((L1+1)/2));
+h2_norm = h2/sum(abs(h2));
+h2_norm = h2_norm/sign(h2_norm((L2+1)/2));
+
 y1 = conv(h1, x);
 y2 = conv(h2, x);
 
@@ -42,7 +48,7 @@ h2_est = h2_est/sum(abs(h2_est));
 h2_est = h2_est/sign(h2_est((L2+1)/2));
 
 % Verify normalized error less than 10^-9
-nerr_h = norm([h1 ; h2] - [h1_est ; h2_est])/norm([h1 ; h2]);
+nerr_h = norm([h1_norm ; h2_norm] - [h1_est ; h2_est])/norm([h1_norm ; h2_norm]);
 fprintf('Normalized error: %.2e\n', nerr_h);
 
 
@@ -54,13 +60,11 @@ z_test = randn(length(y1) + L2 - 1, 1);
 
 % Forward check: Y1 * h should equal conv_operator(h, 'notransp', y1)
 yu1 = conv_operator(h_test, 'notransp', y1);
-err_fwd = norm(Y1 * h_test - yu1);
-fprintf('Forward error: %.2e\n', err_fwd);  % should be ~0
+fprintf('Forward error (Y1*h vs conv_operator): %.2e\n', norm(Y1 * h_test - yu1));
 
 % Adjoint check: Y1.'*z should equal conv_operator(z, 'transp', y1)
 yu1_star = conv_operator(z_test, 'transp', y1);
-err_adj = norm(Y1.' * z_test - yu1_star);
-fprintf('Adjoint error: %.2e\n', err_adj);  % should be ~0
+fprintf('Adjoint error (Y1^T*z vs conv_operator): %.2e\n', norm(Y1.' * z_test - yu1_star));
 
 %% Task 5
 fprintf('\nTask 5:\n')
@@ -77,13 +81,13 @@ h1_est_task5 = v_task5(1:L1);
 h2_est_task5 = v_task5(L1+(1:L2));
 
 % Remove scaling ambiguity
-h_est_task5 = v_task5 / sum(abs(v_task5));
-h_est_task5 = h_est_task5 / sign(h_est_task5((L1+1)/2));
-h1_est_task5 = h_est_task5(1:L1);
-h2_est_task5 = h_est_task5(L1+(1:L2));
+h1_est_task5 = h1_est_task5/sum(abs(h1_est_task5));
+h1_est_task5 = h1_est_task5/sign(h1_est_task5((L1+1)/2));
+h2_est_task5 = h2_est_task5/sum(abs(h2_est_task5));
+h2_est_task5 = h2_est_task5/sign(h2_est_task5((L2+1)/2));
 
 % Normalized error
-nerr_h_task5 = norm([h1; h2] - [h1_est_task5; h2_est_task5]) / norm([h1; h2]);
+nerr_h_task5 = norm([h1_norm; h2_norm] - [h1_est_task5; h2_est_task5]) / norm([h1_norm; h2_norm]);
 fprintf('Task 5 normalized error: %.2e\n', nerr_h_task5);
 
 
@@ -160,6 +164,7 @@ function y = conv_operator(x, mode, h)
     end
 end
 
+%% Task 4
 function hout = gram_two_channel_conv(hin, L1, L2, y1, y2)
     % implement hout = A.’*A hin without constructing A
     h1 = hin(1:L1);
